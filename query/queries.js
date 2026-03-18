@@ -20,14 +20,15 @@ db.restaurants.find({ borough : "Bronx" }, { _id: 0 }).limit(5);
 db.restaurants.find({ borough : "Bronx" }, { _id: 0 }).skip(5).limit(5);
 
 // 8. Trobar els restaurants amb un score de més de 90.
-db.restaurants.aggregate([{ $project: { _id : 0, name : 1, totalScore : { $sum: "$grades.score" }}}, { $match: {
+db.restaurants.aggregate([{ $project: { _id : 0, restaurant_id : 1, totalScore : { $sum: "$grades.score" }}}, { $match: {
   totalScore: { $gt: 90 }}}]);
 
 // 9. Trobar els restaurants amb un score de més de 80 però menys que 100.
-
+db.restaurants.aggregate([{ $project: { _id : 0, restaurant_id : 1, totalScore : { $sum: "$grades.score" }}}, { $match: {
+  totalScore: { $gt: 80, $lt: 100 }}}]);
 
 // 10. Trobar els restaurants amb longitud menor que -95.754168.
-
+db.restaurants.find({ "location.coordinates.0": { $lt: -95.754168 }, { _id : 0, restaurant_id : 1 });
 
 // 11. Trobar restaurants que no preparen 'American', amb qualificació > 70 i longitud < -65.754168.
 
