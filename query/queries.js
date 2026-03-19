@@ -20,19 +20,19 @@ db.restaurants.find({ borough : "Bronx" }, { _id: 0 }).limit(5);
 db.restaurants.find({ borough : "Bronx" }, { _id: 0 }).skip(5).limit(5);
 
 // 8. Trobar els restaurants amb un score de més de 90.
-db.restaurants.aggregate([{ $project: { _id : 0, restaurant_id : 1, totalScore : { $sum: "$grades.score" }}}, { $match: {totalScore: { $gt: 90 }}}]);
+db.restaurants.aggregate([{ $match: { $expr: { $gt: [{ $sum: "$grades.score" }, 90]}}}, { $project: { _id : 0 }}]);
 
 // 9. Trobar els restaurants amb un score de més de 80 però menys que 100.
-db.restaurants.aggregate([{ $project: { _id : 0, restaurant_id : 1, totalScore : { $sum: "$grades.score" }}}, { $match: {totalScore: { $gt: 80, $lt: 100 }}}]);
+db.restaurants.aggregate([{ $match: { $expr: { $and: [{ $gt: [{ $sum: "$grades.score" }, 80] }, { $lt: [{ $sum: "$grades.score" }, 100] }] } } }, { $project: { _id: 0 } }]);
 
 // 10. Trobar els restaurants amb longitud menor que -95.754168.
 db.restaurants.find({ "location.coordinates.0": { $lt: -95.754168 }}, { _id : 0, restaurant_id : 1, "location.cordinates.0" : 1 });
 
 // 11. Trobar restaurants que no preparen 'American', amb qualificació > 70 i longitud < -65.754168.
-db.restaurants.aggregate([{ $project: { _id: 0, restaurant_id: 1, totalScore: { $sum: "$grades.score" }, cuisine: 1, location: 1 }}, { $match: { totalScore: { $gt: 70 }, cuisine: { $nin: ["American"] }, "location.coordinates.0": { $lt: -65.754168 }}}]);
+db.restaurants.aggregate([{ $match: { $expr: { $gt: [{ $sum: "$grades.score" }, 70] }, cuisine: { $nin: ["American"] }, "location.coordinates.0": { $lt: -65.754168 } } }, { $project: { _id: 0 } }]);
 
 // 12. El mateix que l'anterior però sense usar operador $and.
-db.restaurants.aggregate([{ $project: { _id: 0, restaurant_id: 1, totalScore: { $sum: "$grades.score" }, cuisine: 1, location: 1 }}, { $match: { totalScore: { $gt: 70 }, cuisine: { $nin: ["American"] }, "location.coordinates.0": { $lt: -65.754168 }}}]);
+db.restaurants.aggregate([{ $match: { $expr: { $gt: [{ $sum: "$grades.score" }, 70] }, cuisine: { $nin: ["American"] }, "location.coordinates.0": { $lt: -65.754168 } } }, { $project: { _id: 0 } }]);
 
 // 13. Trobar restaurants que no són 'American', grau 'A', i no són de Brooklyn. Ordenats per cuisine descendent.
 db.restaurants.find({ borough: { $ne: "Brooklyn" }, cuisine : { $ne: "American" }, "grades.grade" : "A" }, { _id: 0 }).sort({ cuisine: -1 });
@@ -68,7 +68,7 @@ db.restaurants.find({ grades: { $elemMatch: { grade: "A", score: 11, date: ISODa
 db.restaurants.find({ "grades.1.grade": "A", "grades.1.score": 9, "grades.1.date": ISODate( "2014-08-11T00:00:00Z" ) }, { _id: 0, restaurant_id: 1, name: 1, grades: 1 });
 
 // 24. Trobar el restaurant_id, name, street, zipcode i coordenades dels restaurants a menys de 5 km de [-74, 40.7].
-db.restaurants.find({ location: { $near: {$geometry:{ type: "Point", coordinates: [-74, 40.7]}, $maxDistance: 5000}}}, { _id: 0, restaurant_id: 1, name: 1, "address.street": 1, "adress.zipcode": 1, "location.coordinates": 1 });
+db.restaurants.find({ location: { $near: {$geometry:{ type: "Point", coordinates: [-74, 40.7]}, $maxDistance: 5000}}}, { _id: 0, restaurant_id: 1, name: 1, "address.street": 1, "address.zipcode": 1, "location.coordinates": 1 });
 
 // 25. Ordenar els noms dels restaurants en ordre ascendent, mostrant totes les columnes.
 db.restaurants.find({}, { _id: 0 }).sort({ name: 1 });
@@ -92,4 +92,4 @@ db.restaurants.find({ "grades.score": { $mod: [7, 0] } }, { _id: 0, restaurant_i
 db.restaurants.find({ name: {$regex: /mon/ }}, { _id: 0, name: 1, borough: 1, "location.coordinates.0": 1, "location.coordinates.1": 1, cuisine: 1 });
 
 // 32. Mostrar restaurant_id, name i grade i score de més de 80 però menys que 100.
-db.restaurants.aggregate([{ $match: { $expr: { $and: [{ $gt: [{ $sum: "$grades.score" }, 80] }, { $lt: [{ $sum: "$grades.score" }, 100] }] } } }, { $project: { _id: 0, restaurant_id: 1, name: 1, totalScore: { $sum: "$grades.score" } } }]);
+db.restaurants.aggregate([{ $match: { $expr: { $and: [{ $gt: [{ $sum: "$grades.score" }, 80] }, { $lt: [{ $sum: "$grades.score" }, 100] }] } } }, { $project: { _id: 0, restaurant_id: 1, name: 1, "grades.grade": 1, "grades.score": 1 } }]);
