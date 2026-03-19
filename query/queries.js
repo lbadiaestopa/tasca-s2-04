@@ -39,7 +39,7 @@ db.restaurants.aggregate([{ $project: { _id: 0, restaurant_id: 1, totalScore: { 
       location: 1 }}, { $match: { totalScore: { $gt: 70 }, cuisine: { $nin: ["American"] }, "location.coordinates.0": { $lt: -65.754168 }}}]);
 
 // 13. Trobar restaurants que no són 'American', grau 'A', i no són de Brooklyn. Ordenats per cuisine descendent.
-db.restaurants.find({ boroug: { $ne: "Brooklyn" }, cuisine : { $ne: "American" }, "grades.grade" : "A" }).sort({ cuisine: -1 }, { _id: 0 });
+db.restaurants.find({ borough: { $ne: "Brooklyn" }, cuisine : { $ne: "American" }, "grades.grade" : "A" }, { _id: 0 }).sort({ cuisine: -1 });
 
 // 14. Trobar restaurant_id, name, borough i cuisine on el nom comença amb 'Wil'.
 db.restaurants.find({ name: { $regex: /^Wil/ }}, { _id : 0, restaurant_id : 1, name : 1, borough : 1, cuisine : 1 });
@@ -51,7 +51,7 @@ db.restaurants.find({ name: { $regex: /ces$/ }}, { _id : 0, restaurant_id : 1, n
 db.restaurants.find({ name: { $regex: /Reg/ }}, { _id : 0, restaurant_id : 1, name : 1, borough : 1, cuisine : 1 });
 
 // 17. Trobar restaurants del Bronx que preparen cuina americana o xinesa.
-db.restaurants.find({ cuisine: { $in: ["American", "Chinese"] } }, { _id: 0});
+db.restaurants.find({ borough: "Bronx", cuisine: { $in: ["American", "Chinese"] } }, { _id: 0});
 
 // 18. Trobar restaurant_id, name, borough i cuisine per a Staten Island, Queens, Bronx o Brooklyn.
 db.restaurants.find({ borough: { $in: ["Staten Island", "Queens", "Bronx", "Brooklyn"] } }, { _id : 0, restaurant_id : 1, name : 1, borough : 1, cuisine : 1 });
@@ -63,7 +63,7 @@ db.restaurants.find({ borough: { $nin: ["Staten Island", "Queens", "Bronx", "Bro
 db.restaurants.find({ "grades.score": { $lte: 10 } }, { _id: 0, restaurant_id: 1, name: 1, borough: 1, cuisine: 1 });
 
 // 21. Trobar restaurants que preparen peix, no 'American' ni 'Chinees', o nom comença amb 'Wil'.
-db.restaurants.find({ cuisine: "fish", cuisine: { $nin: ["American", "Chinese"] }, name: { $regex: /^Wil/ }}, { _id : 0 });
+db.restaurants.find({ $or: [{ cuisine: "fish" }, {cuisine: { $nin: ["American", "Chinese"] }}, { name: { $regex: /^Wil/ }}] }, { _id : 0 });
 
 // 22. Trobar restaurant_id, name, i grades per grau "A", score 11, i data "2014-08-11T00:00:00Z".
 db.restaurants.find({ grades: { $elemMatch: { grade: "A", score: 11, date: ISODate( "2014-08-11T00:00:00Z" )}}}, { _id: 0, restaurant_id: 1, name: 1, grades: 1 });
