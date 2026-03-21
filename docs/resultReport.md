@@ -25,26 +25,13 @@
 - ✔️ OK - Query **[ 8 ]**
 
 ---
-- ❌ MISMATCH - Query **[ 9 ]** Result does not match expected output.
-
-
-🔢 Different result lengths: 
-- **Expected:** 1
-- **Got:** 2
+- ✔️ OK - Query **[ 9 ]**
 
 ---
 - ✔️ OK - Query **[ 10 ]**
 
 ---
 - ✔️ OK - Query **[ 11 ]**
-
----
-- ❌ MISMATCH - Query **[ 12 ]** Result does not match expected output.
-
-
-🔢 Different result lengths: 
-- **Expected:** 1
-- **Got:** 88
 
 ---
 - ✔️ OK - Query **[ 13 ]**
@@ -71,12 +58,7 @@
 - ✔️ OK - Query **[ 20 ]**
 
 ---
-- ❌ MISMATCH - Query **[ 21 ]** Result does not match expected output.
-
-
-🔢 Different result lengths: 
-- **Expected:** 14
-- **Got:** 390
+- ✔️ OK - Query **[ 21 ]**
 
 ---
 - ✔️ OK - Query **[ 22 ]**
@@ -100,9 +82,9 @@
 - ❌ MISMATCH - Query **[ 28 ]** Result does not match expected output.
 
 
-🔢 Different result lengths: 
-- **Expected:** 3
-- **Got:** 2
+🧩 Mismatch at position 0:
+- **Expected:** {"address":{}}
+- **Actual:** {"address":{},"borough":"Brooklyn","cuisine":"Hamburgers","grades":[{},{},{}],"location":{},"name":"White Castle","restaurant_id":40386837}
 
 ---
 - ✔️ OK - Query **[ 29 ]**
@@ -111,18 +93,8 @@
 - ✔️ OK - Query **[ 30 ]**
 
 ---
-- ❌ MISMATCH - Query **[ 31 ]** Result does not match expected output.
-
-
-🔢 Different result lengths: 
-- **Expected:** 10
-- **Got:** 7
+- ✔️ OK - Query **[ 31 ]**
 
 ---
-- ❌ MISMATCH - Query **[ 32 ]** Result does not match expected output.
-
-
-🔢 Different result lengths: 
-- **Expected:** 1
-- **Got:** 55
+- ✔️ OK - Query **[ 32 ]**
 
