@@ -20,16 +20,16 @@ db.restaurants.find({ borough : "Bronx" }, { _id: 0 }).limit(5)
 db.restaurants.find({ borough : "Bronx" }, { _id: 0 }).skip(5).limit(5)
 
 // 8. Trobar els restaurants amb un score de més de 90.
-db.restaurants.aggregate([{ $match: { $expr: { $gt: [{ $sum: "$grades.score" }, 90]}}}, { $project: { _id : 0 }}])
+db.restaurants.find({ "grades.score": { $gt: 90 }}, { _id: 0 })
 
 // 9. Trobar els restaurants amb un score de més de 80 però menys que 100.
-db.restaurants.aggregate([{ $match: { $expr: { $and: [{ $gt: [{ $sum: "$grades.score" }, 80] }, { $lt: [{ $sum: "$grades.score" }, 100] }] } } }, { $project: { _id: 0 } }])
+db.restaurants.find({ "grades.score": { $gt: 80, $lt: 100 }}, { _id: 0 })
 
 // 10. Trobar els restaurants amb longitud menor que -95.754168.
 db.restaurants.find({ "location.coordinates.0": { $lt: -95.754168 }}, { _id : 0, restaurant_id : 1, "location.cordinates.0" : 1 })
 
 // 11. Trobar restaurants que no preparen 'American', amb qualificació > 70 i longitud < -65.754168.
-db.restaurants.aggregate([{ $match: { $expr: { $gt: [{ $sum: "$grades.score" }, 70] }, cuisine: { $nin: ["American"] }, "location.coordinates.0": { $lt: -65.754168 } } }, { $project: { _id: 0 } }])
+db.restaurants.find({ "grades.score": { $gt: 70 }, cuisine: { $ne: 'American' }, "location.coordinates.0": { $lt: -65.754168 }}, { _id: 0 }).count()
 
 // 12. El mateix que l'anterior però sense usar operador $and.
 db.restaurants.aggregate([{ $match: { $expr: { $gt: [{ $sum: "$grades.score" }, 70] }, cuisine: { $nin: ["American"] }, "location.coordinates.0": { $lt: -65.754168 } } }, { $project: { _id: 0 } }])
