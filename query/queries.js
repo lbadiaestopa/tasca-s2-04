@@ -29,7 +29,7 @@ db.restaurants.find({ "grades.score": { $gt: 80, $lt: 100 }}, { _id: 0 })
 db.restaurants.find({ "location.coordinates.0": { $lt: -95.754168 }}, { _id : 0, restaurant_id : 1, "location.cordinates.0" : 1 })
 
 // 11. Trobar restaurants que no preparen 'American', amb qualificació > 70 i longitud < -65.754168.
-db.restaurants.find({ "grades.score": { $gt: 70 }, cuisine: { $ne: 'American' }, "location.coordinates.0": { $lt: -65.754168 }}, { _id: 0 }).count()
+db.restaurants.find({ "grades.score": { $gt: 70 }, cuisine: { $ne: 'American' }, "location.coordinates.0": { $lt: -65.754168 }}, { _id: 0 })
 
 // 12. El mateix que l'anterior però sense usar operador $and.
 db.restaurants.aggregate([{ $match: { $expr: { $gt: [{ $sum: "$grades.score" }, 70] }, cuisine: { $nin: ["American"] }, "location.coordinates.0": { $lt: -65.754168 } } }, { $project: { _id: 0 } }])
